@@ -1,9 +1,7 @@
 import os
 from dotenv import load_dotenv
 import oracledb
-
 from datetime import datetime
-
 load_dotenv()
 user=os.getenv("DB_USER")
 password=os.getenv("DB_PASSWORD")
@@ -17,9 +15,10 @@ def add_task():
     teacher_id=int(input("Enter teacher ID:"))
     start_date_str=input("Enter start date(YYYY-MM-DD):")
     end_date_str=input("Enter end date(YYYY-MM-DD):")
+    #Convert string input to datetime.date objects
     start_date=datetime.strptime(start_date_str,"%Y-%m-%d").date()
     end_date=datetime.strptime(end_date_str,"%Y-%m-%d").date()
-
+    # Create a cursor and insert the new task into the database
     cursor=connection.cursor()
     insert_query="""
 INSERT INTO TASKS(title,description,status,student_id,teacher_id,start_date,end_date)
@@ -35,6 +34,8 @@ VALUES(:title,:description,:status,:student_id,:teacher_id,:start_date,:end_date
         "end_date":end_date
     })
     connection.commit()
+    # Print confirmation that the task was added
+
     print("Task added!")
 def choose(move):
     match move:
@@ -53,7 +54,6 @@ def choose(move):
             print( "Exit")
             return False
 while True:
-    
     print("\n------ Student Task Tracker ------")
     print("1. Add Task")
     print("2. View Tasks")
